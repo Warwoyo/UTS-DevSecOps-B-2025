@@ -1,8 +1,6 @@
 pipeline {
   agent any
-  tools {
-    nodejs "NodeJS"         // pastikan di Jenkins terdaftar NodeJS dengan nama "NodeJS"
-  }
+
   stages {
     stage('Checkout') {
       steps {
@@ -11,6 +9,7 @@ pipeline {
     }
     stage('Install Dependencies') {
       steps {
+        sh 'node -v'        // buat cek node jalan
         sh 'npm install'
       }
     }
@@ -20,11 +19,12 @@ pipeline {
       }
       post {
         always {
-          junit '**/test-results/*.xml'   // jika pakai reporter JUnit
+          junit '**/test-results/*.xml'
         }
       }
     }
   }
+
   post {
     success {
       echo '✅ Semua test lulus, siap delivery/deploy.'
